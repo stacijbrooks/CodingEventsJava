@@ -1,27 +1,22 @@
 package org.launchcode.codingevents.models;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-import java.util.Objects;
-
-/**
- * Created by Chris Bay
- */
 @Entity
-public class EventCategory {
+public class EventCategory extends AbstractEntity {
 
-    @Id
-    @GeneratedValue
-    private int id;
-
-    @Size(min=3, message="Name must be at least 3 characters long")
+    @NotBlank(message = "Name is required")
+    @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
     private String name;
 
-    public EventCategory(@Size(min = 3, message = "Name must be at least 3 characters long") String name) {
+    @Size(max = 500, message = "Description too long!")
+    private String description;
+
+    public EventCategory(String name, String description) {
         this.name = name;
+        this.description = description;
     }
 
     public EventCategory() {}
@@ -34,26 +29,16 @@ public class EventCategory {
         this.name = name;
     }
 
-    public int getId() {
-        return id;
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
     public String toString() {
         return name;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        EventCategory that = (EventCategory) o;
-        return id == that.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }
-
